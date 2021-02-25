@@ -41,6 +41,7 @@
 // accelerators/bvh.h*
 #include "pbrt.h"
 #include "primitive.h"
+#include "accelerators/morton.h"
 #include <atomic>
 
 namespace pbrt {
@@ -48,7 +49,6 @@ struct BVHBuildNode;
 
 // BVHAccel Forward Declarations
 struct BVHPrimitiveInfo;
-struct MortonPrimitive;
 struct LinearBVHNode;
 
 // BVHAccel Declarations
