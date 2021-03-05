@@ -5,6 +5,15 @@
 
 #ifndef PBRT_ACCELERATORS_AACACCEL_H
 #define PBRT_ACCELERATORS_AACACCEL_H
+<<<<<<< HEAD
+#include <atomic>
+
+#include "accelerators/morton.h"
+#include "pbrt.h"
+#include "primitive.h"
+
+// accelerators/acc.h*
+=======
 
 // accelerators/kdtreeaccel.h*
 #include "pbrt.h"
@@ -18,63 +27,60 @@
 #define SurA(a) ((a[0].max - a[0].min) * (a[1].max - a[1].min) + (a[0].max - a[0].min) * (a[2].max - a[2].min) + (a[1].max - a[1].min) * (a[2].max - a[2].min))
 const float infi = 1e10;
 
+>>>>>>> deb9d25095a00d671f20fe376c6fcbd785e6ed82
 namespace pbrt {
 
 // AACAccel Declarations
 struct AACPrimitiveInfo;
-struct AACBuildNode;
-struct AACThread;
+struct AACTreeNode;
+struct AACFlatTreeNode;
+struct AACCluster;
 
 class AACAccel : public Aggregate {
   public:
     // AACAccel Public Methods
-    AACAccel(std::vector<std::shared_ptr<Primitive>> p, int delta, Float alpha);
-    Bounds3f WorldBound() const { return bounds; }
+    AACAccel(std::vector<std::shared_ptr<Primitive>> p, int delta, float alpha);
     ~AACAccel();
+    Bounds3f WorldBound() const { return bounds; };
     bool Intersect(const Ray &ray, SurfaceInteraction *isect) const;
     bool IntersectP(const Ray &ray) const;
 
   private:
     // AACAccel Private Methods
-    void buildTree(std::vector<MortonPrimitive> mortonPrims);
-    void threadBuild(AACThread *th, int start, int startTri, int endTri,
-                     int digit, int &finalLen);
-    void setLeaf(AACThread *th, int start, int startTri, int numTri);
-    void AAClomerate(AACThread *th, int start, int startNum, int endNum,
-                     int &finalNum);
-    void merge(AACThread *th, int start, int len1, int len2);
-    void pruneTree();
+    AACTreeNode *buildTree(
+        MemoryArena &arena, std::vector<MortonPrimitive> &mortonPrims,
+        std::vector<std::shared_ptr<Primitive>> &orderedPrims,
+        std::vector<AACPrimitiveInfo> &primitiveInfo, int *totalNodes);
 
+    std::vector<AACCluster> buildTree(
+        MemoryArena &arena, std::vector<MortonPrimitive> &mortonPrims,
+        std::vector<std::shared_ptr<Primitive>> &orderedPrims,
+        std::vector<AACPrimitiveInfo> &primitiveInfo, int *totalNodes, int left,
+        int right);
+
+    // Partition
+    int makePartition(std::vector<MortonPrimitive> &mortonPrims, int left,
+                      int right, int *axis);
+    // Find best match for cluster i
+    void findBestMatch(int i, std::vector<AACCluster> &cluster);
+    void combineClusters(
+        MemoryArena &arena, std::vector<AACCluster> &cluster, int *totalNodes, int n, int axis);
+
+    int flattenAACTree(AACTreeNode *node, int *offset);
     // inline functions
-    int inline f(int len) {
-        return int(minSize * pow(float(len) / minSize / 2, 0.5 - alpha) -
-                   epsi) +
-               1;
-    };
-
-    float inline SA(Bounds3f a, Bounds3f b) {
-        float x = max(a[0].max, b[0].max) - min(a[0].min, b[0].min);
-        float y = max(a[1].max, b[1].max) - min(a[1].min, b[1].min);
-        float z = max(a[2].max, b[2].max) - min(a[2].min, b[2].min);
-        return x * y + x * z + y * z;
-    };
+    int f(int len);
 
     // AACAccel Private Data
-    std::vector<std::shared_ptr<Primitive>> primitives;
-    Bounds3f bounds;
-
     const int minSize;
     const double alpha;
-    int table[100];
+    const int MortonDigit;
 
-    int *set, *setTmp;
-    long long *code;
-    int MortonDigit;
+    const float epsi = 1e-8;
+    const float infi = 1e10;
 
-    int *lChild, *rChild, *nodeNum, *triNum;
-    int curNode;
-    bool *isLeaf;
-    double *cost, *surA;
+    std::vector<std::shared_ptr<Primitive>> primitives;
+    Bounds3f bounds;
+    AACFlatTreeNode *nodes = nullptr;
 };
 
 std::shared_ptr<AACAccel> CreateAACAccelerator(

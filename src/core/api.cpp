@@ -41,6 +41,7 @@
 #include "stats.h"
 
 // API Additional Headers
+#include "accelerators/aac.h"
 #include "accelerators/bvh.h"
 #include "accelerators/kdtreeaccel.h"
 #include "cameras/environment.h"
@@ -776,6 +777,8 @@ std::shared_ptr<Primitive> MakeAccelerator(
         accel = CreateBVHAccelerator(std::move(prims), paramSet);
     else if (name == "kdtree")
         accel = CreateKdTreeAccelerator(std::move(prims), paramSet);
+    else if (name == "aac")
+        accel = CreateAACAccelerator(std::move(prims), paramSet);
     else
         Warning("Accelerator \"%s\" unknown.", name.c_str());
     paramSet.ReportUnused();

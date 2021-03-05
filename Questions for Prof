@@ -1,0 +1,4 @@
+1. what is the Tree supposed to look like? Are the interior nodes supposed to contain references to primitives? 
+    probably not. 
+2. What heuristic do we want to compute the nearest cluster?
+    currently using centroid, might want something else

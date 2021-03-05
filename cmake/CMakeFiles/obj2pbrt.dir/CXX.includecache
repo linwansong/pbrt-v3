@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/linwan/Documents/URA/pbrt-v3-aac/src/tools/obj2pbrt.cpp
+string
+-
+vector
+-
+map
+-
+cmath
+-
+cstdlib
+-
+cstring
+-
+cassert
+-
+cmath
+-
+cstddef
+-
+cctype
+-
+fstream
+-
+sstream
+-
+set
+-
+stdio.h
+-
+string.h
+-
+algorithm
+-
+

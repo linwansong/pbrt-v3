@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/linwan/Documents/URA/pbrt-v3-aac/src/ext/openexr/IlmBase/Half/eLut.cpp
+iostream
+-
+iomanip
+-
+

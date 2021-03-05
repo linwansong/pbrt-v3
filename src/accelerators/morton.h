@@ -5,9 +5,16 @@
 
 #ifndef PBRT_ACCELERATORS_MortonCode_H
 #define PBRT_ACCELERATORS_MortonCode_H
+<<<<<<< HEAD
+#include "pbrt.h"
+#include "primitive.h"
+
+namespace pbrt {
+=======
 
 namespace pbrt {
 
+>>>>>>> deb9d25095a00d671f20fe376c6fcbd785e6ed82
 struct MortonPrimitive {
     int primitiveIndex;
     uint32_t mortonCode;
@@ -36,16 +43,26 @@ inline uint32_t LeftShift3(uint32_t x) {
     // x = ---- 9--8 --7- -6-- 5--4 --3- -2-- 1--0
 #endif // PBRT_HAVE_BINARY_CONSTANTS
     return x;
+<<<<<<< HEAD
+};
+=======
 }
+>>>>>>> deb9d25095a00d671f20fe376c6fcbd785e6ed82
 
 inline uint32_t EncodeMorton3(const Vector3f &v) {
     CHECK_GE(v.x, 0);
     CHECK_GE(v.y, 0);
     CHECK_GE(v.z, 0);
     return (LeftShift3(v.z) << 2) | (LeftShift3(v.y) << 1) | LeftShift3(v.x);
+<<<<<<< HEAD
+};
+
+inline void RadixSort(std::vector<MortonPrimitive> *v) {
+=======
 }
 
 static void RadixSort(std::vector<MortonPrimitive> *v) {
+>>>>>>> deb9d25095a00d671f20fe376c6fcbd785e6ed82
     std::vector<MortonPrimitive> tempVector(v->size());
     PBRT_CONSTEXPR int bitsPerPass = 6;
     PBRT_CONSTEXPR int nBits = 30;
@@ -86,8 +103,16 @@ static void RadixSort(std::vector<MortonPrimitive> *v) {
     }
     // Copy final result from _tempVector_, if needed
     if (nPasses & 1) std::swap(*v, tempVector);
+<<<<<<< HEAD
+};
+
+}  // namespace pbrt
+
+#endif  // PBRT_ACCELERATORS_MORTON_H
+=======
 }
 
 }  // namespace pbrt
 
 #endif  // PBRT_ACCELERATORS_BVH_H
+>>>>>>> deb9d25095a00d671f20fe376c6fcbd785e6ed82

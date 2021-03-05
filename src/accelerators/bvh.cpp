@@ -92,6 +92,7 @@ struct LinearBVHNode {
     union {
         int primitivesOffset;   // leaf
         int secondChildOffset;  // interior
+        
     };
     uint16_t nPrimitives;  // 0 -> interior node
     uint8_t axis;          // interior node: xyz
